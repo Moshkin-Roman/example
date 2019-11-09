@@ -1,7 +1,7 @@
-$(document).ready(function() {
+п»ї$(document).ready(function() {
     let box = $('.comm-list');
     
-    /*  сортировка  */
+    /*  СЃРѕСЂС‚РёСЂРѕРІРєР°  */
     $('#filter').on('change', function() {
         let fltr = $(this).val();
         let comments = $('.comment'); 
@@ -66,6 +66,25 @@ $(document).ready(function() {
         });
     });
     
-    /*  отправка данных формы  */
+    /*  РѕС‚РїСЂР°РІРєР° РґР°РЅРЅС‹С… С„РѕСЂРјС‹  */
+    $('.snd-btn').on('click', function() {
+        let data = $(this).closest('.c-form');
+        let $that = $(this);
+        let formData = new FormData(data.get(0));
+
+        $.ajax({
+            url: 'get_form_data.php',
+            type: 'POST',
+//            dataType: 'json',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function(json){
+                if(json){
+                    console.log(json);
+                }
+            }
+        });
+    });
     
 });

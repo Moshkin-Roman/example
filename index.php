@@ -11,7 +11,7 @@
     
     $mysqli->set_charset("utf8");
 
-    $sql = "SELECT * FROM comments";
+    $sql = "SELECT * FROM comments WHERE allowed=1";
     $str = '';
     
     if ($result = $mysqli->query($sql)) {
@@ -38,7 +38,7 @@
         $sql = "SELECT pic_url FROM picters WHERE comm_id='$comm_id'";
         
         if ($result = $mysqli->query($sql)) {
-//print_r($sql);
+
             while ($row = $result->fetch_assoc()) {
                 $img_list .= '<li><img src="' . $row['pic_url'] . '"/></li>';
             }
@@ -56,8 +56,8 @@
         <meta charset="UTF-8">
         <title>Комментарии</title>
         <script src="js/jquery.js"></script>
-        <script src="js/main.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script src="js/main.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="screen">
         <link rel="stylesheet" href="css/styles.css" type="text/css" media="screen">
     </head>
@@ -77,8 +77,8 @@
                         <input class="form-control" placeholder="Ваше имя:" type="text" name="name" />
                         <input class="form-control" placeholder="Ваш email:" type="text" name="email" />
                         <input class="form-control" type="file" accept="image/jpeg,image/png,image/gif" name="img" />
-                        <textarea  class="form-control" placeholder="Сообщение" rows="10"></textarea>
-                        <div class="btn btn-success">Отправить</div>
+                        <textarea  class="form-control" placeholder="Сообщение" rows="10" name="msg"></textarea>
+                        <div class="btn btn-success snd-btn">Отправить</div>
                     </form>
                 </div>
             </div>
