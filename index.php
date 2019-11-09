@@ -1,23 +1,29 @@
 <?php
 
-    $db ='dl';
-    $db_user = 'root';
-    $db_pass = '';
+    $db ='test2';
+    $db_user = 'user';
+    $db_pass = 'test';
     
     $mysqli = new mysqli('localhost', $db_user, $db_pass, $db);
     if ($mysqli->connect_errno) { 
         echo "Ошибка: " . $mysqli->connect_error . "\n";
     }
     
+    $mysqli->set_charset("utf8");
+
     $sql = "SELECT * FROM comments";
     $str = '';
     
     if ($result = $mysqli->query($sql)) {
+        
         while ($row = $result->fetch_assoc()) {
+            $img_list = (get_picters($row['comm_id'], $mysqli)) ? get_picters($row['comm_id'], $mysqli) : "";
+            
             $str .= (
                 '<div class="comment">
                     <div class="comm-date">' . $row['comm_date'] . '</div>
                     <div class="comm-text">' . $row['comment'] . '</div>
+                    ' . $img_list . '
                     <div class="comm-autor">' . $row['comm_name'] . '</div>
                     <div class="comm-email">' . $row['comm_email'] . '</div>                        
                 </div>'
@@ -26,8 +32,23 @@
     } else {
         echo "Ошибка: " . $mysqli->error . "\n";
     }
+    
+    function get_picters($comm_id, $mysqli) {
+        $img_list = "";
+        $sql = "SELECT pic_url FROM picters WHERE comm_id='$comm_id'";
+        
+        if ($result = $mysqli->query($sql)) {
+//print_r($sql);
+            while ($row = $result->fetch_assoc()) {
+                $img_list .= '<li><img src="' . $row['pic_url'] . '"/></li>';
+            }
+            
+            return "<ul class='img-list'>" . $img_list . "</ul>";
+        } else {
+            return false;
+        }
+    }
 ?>
-
 
 <!doctype html>
 <html lang="ru">
@@ -43,8 +64,15 @@
     <body>
         <div class="container">
             <div class="row">
-                <div class="col-sm-6 col-sm-offset-3 comm-list">
-                    <?php echo $str; ?>
+                <select id="filter">
+                    <option value="date">по дате</option>
+                    <option value="name">по имени автора</option>
+                    <option value="email">по email</option>
+                </select>
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="comm-list">
+                        <?php echo $str; ?>
+                    </div>
                     <form class="c-form" action="">
                         <input class="form-control" placeholder="Ваше имя:" type="text" name="name" />
                         <input class="form-control" placeholder="Ваш email:" type="text" name="email" />
