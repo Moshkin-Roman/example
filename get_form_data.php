@@ -1,4 +1,4 @@
-<?php
+ï»¿<?php
 
     if(!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['msg'])){ 
         $name = $_POST['name'];
@@ -17,12 +17,16 @@
         $mysqli = new mysqli('localhost', $db_user, $db_pass, $db);
         
         if ($mysqli->connect_errno) { 
-            echo "Îøèáêà: " . $mysqli->connect_error . "\n";
+            echo "ÑœÑˆÐ¸Ð±ÐºÐ°: " . $mysqli->connect_error . "\n";
         }
         
         $mysqli->set_charset("utf8");
         $sql = "INSERT INTO comments SET comm_name='$name', comm_email='$email', comment='$msg'";
-        $result = $mysqli->query($sql);
-        return $sql;
+        
+        if ($result = $mysqli->query($sql)) {
+            return "ok";
+        } else {
+            return "fail";
+        }
     }
 ?>

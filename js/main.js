@@ -68,9 +68,9 @@
     
     /*  отправка данных формы  */
     $('.snd-btn').on('click', function() {
-        let data = $(this).closest('.c-form');
+        let form = $(this).closest('.c-form');
         let $that = $(this);
-        let formData = new FormData(data.get(0));
+        let formData = new FormData(form.get(0));
 
         $.ajax({
             url: 'get_form_data.php',
@@ -81,10 +81,71 @@
             data: formData,
             success: function(json){
                 if(json){
-                    console.log(json);
+                    let text = '';
+                    if(json == 'ok') {
+                        text = '<span class="text-success">Комментарий добавлен и будет опубликован после проверки модератором.</span>';
+                        clear_form();
+                    } else {
+                        text = '<span class="text-danger">Ошибка добавления комментария</span>';
+                    }
+                    $('.inner-msg').html('<h3>' + text + '</h3>');
+                    setTimeout(function() {
+                        $('.inner-msg').html('')
+                        }, 3000);
                 }
             }
         });
     });
+    
+    /* Вход для админа */
+    $('.auth').on('click', function() {
+        let form = $(
+            '<form class="auth-bg">' +
+                '<div class="auth-form">' +
+                    '<input class="form-control" type="text" name="login" placeholder="Логин" />' +
+                    '<input class="form-control" type="text" name="passwd" placeholder="Пароль" />' +
+                    '<div class="btn btn-success login-snd">Авторизоваться</div>' +
+                    '<div class="auth-close"></div>' +
+                '</div>' +
+            '</form>'
+        );
+        
+        form.find('.auth-close').on('click', function() {
+            close_modal();
+        });
+        
+        form.find('.login-snd').on('click', function() {
+            let data = $(this).closest('.auth-bg').serialize();
+
+            $.ajax({
+                url: 'auth.php',
+                type: 'POST',
+                data: data,
+                success: function(answ){
+                    if(answ){
+                        adm_page_view(answ);
+                    }
+                }
+            });
+        });
+        
+        $('body').append(form);
+    });
+    
+    function clear_form() {
+        $('.c-form input, textarea').val('');
+    }
+    
+    function close_modal() {
+        $('.auth-bg').remove();
+    }
+    
+    function adm_page_view(answ) {
+        if (answ == "verified") {
+            location.reload();
+        } else {
+            close_modal();
+        }
+    }
     
 });
