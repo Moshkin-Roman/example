@@ -132,6 +132,64 @@
         $('body').append(form);
     });
     
+    /* выход */
+    $('.de-auth').on('click', function() {
+        let data = {
+            "deauth": 1
+        };
+
+        $.ajax({
+            url: 'auth.php',
+            type: 'POST',
+            data: data,
+            success: function(answ){
+                if(answ){
+                    location.reload();
+                }
+            }
+        });
+    });
+    
+    /*  активация комментария админом  */
+    $('.fa-eye').on('click', function() {
+        let blok = $(this).closest('.comment');
+        let id = blok.attr('data-id')
+
+        let data = {
+            "action": "activate",
+            "id": id
+        };
+
+        $.post('controller.php', data, function(answ) {
+            console.log(answ);
+            if (answ == 'ok') {
+                blok.removeClass('on-check');
+            } else {
+                console.log('Ошибка обновления записи');
+            }
+        });
+    });
+    
+    /*  выключение комментария админом  */
+    $('.fa-eye-slash').on('click', function() {
+        let blok = $(this).closest('.comment');
+        let id = blok.attr('data-id')
+
+        let data = {
+            "action": "lock",
+            "id": id
+        };
+
+        $.post('controller.php', data, function(answ) {
+            console.log(answ);
+            if (answ == 'ok') {
+                blok.addClass('on-check');
+            } else {
+                console.log('Ошибка обновления записи');
+            }
+        });
+    });
+    
     function clear_form() {
         $('.c-form input, textarea').val('');
     }

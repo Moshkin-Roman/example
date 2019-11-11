@@ -1,6 +1,32 @@
 <?php
-
-    $adm = 0;
+    session_start();
+    $adm  = !empty($_SESSION['adm']) ? $_SESSION['adm'] : 0;
+    
+    if ($adm == 1) {
+        $login_caption = "Выход";
+        $login_class = "de-auth" ;
+        $form = "";
+        $controls = (
+        '<div class="ctrl col-sm-4">
+            <i class="fas fa-eye pull-right"></i>
+            <i class="fas fa-eye-slash pull-right"></i>
+            <i class="fas fa-pencil-alt pull-right"></i>
+        </div>'
+        );
+    } else {
+        $login_caption = "Вход";
+        $login_class = "auth" ;
+        $form = '
+            <form class="c-form" action="">
+                <input class="form-control" placeholder="Ваше имя:" type="text" name="name" />
+                <input class="form-control" placeholder="Ваш email:" type="text" name="email" />
+                <input class="form-control" type="file" accept="image/jpeg,image/png,image/gif" name="img" />
+                <textarea  class="form-control" placeholder="Сообщение" rows="10" name="msg"></textarea>
+                <div class="btn btn-success snd-btn">Отправить</div>
+            </form>
+        ';
+        $controls = "";
+    }
 
     $db ='test2';
     $db_user = 'user';
@@ -29,8 +55,11 @@
             $allowed = $row['allowed'] == 0 ? " on-check" : "";
             
             $str .= (
-                '<div class="comment ' . $allowed . '">
-                    <div class="comm-date">' . $row['comm_date'] . '</div>'
+                '<div class="comment ' . $allowed . '" data-id="' . $row['comm_id'] . '">
+                    <div class="row">
+                        <div class="comm-date col-sm-8">' . $row['comm_date'] . '</div>'
+                         . $controls .
+                    '</div>'
                     . $modified .
                     '<div class="comm-text">' . $row['comment'] . '</div>
                     ' . $img_list . '
@@ -70,6 +99,7 @@
         <script src="js/main.js"></script>
         <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="screen">
         <link rel="stylesheet" href="css/styles.css" type="text/css" media="screen">
+        <link rel="stylesheet" href="css/all.min.css" type="text/css" media="screen">
     </head>
     <body>
         <div class="container">
@@ -80,18 +110,15 @@
                     <option value="email">по email</option>
                 </select>
                 <div class="col-sm-6 col-sm-offset-3">
-                    <div class="auth">Вход</div>
+                    <div class="<?php echo $login_class ?>">
+                        <i class="fas fa-user"></i>
+                        <?php echo $login_caption; ?>
+                    </div>
                     <div class="comm-list">
                         <?php echo $str; ?>
                     </div>
                     <div class="inner-msg"></div>
-                    <form class="c-form" action="">
-                        <input class="form-control" placeholder="Ваше имя:" type="text" name="name" />
-                        <input class="form-control" placeholder="Ваш email:" type="text" name="email" />
-                        <input class="form-control" type="file" accept="image/jpeg,image/png,image/gif" name="img" />
-                        <textarea  class="form-control" placeholder="Сообщение" rows="10" name="msg"></textarea>
-                        <div class="btn btn-success snd-btn">Отправить</div>
-                    </form>
+                    <?php echo $form; ?>
                 </div>
             </div>
         </div>

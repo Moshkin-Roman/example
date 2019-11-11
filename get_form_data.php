@@ -1,5 +1,4 @@
 ﻿<?php
-
     if(!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['msg'])){ 
         $name = $_POST['name'];
         $email = $_POST['email'];
@@ -17,7 +16,7 @@
         $mysqli = new mysqli('localhost', $db_user, $db_pass, $db);
         
         if ($mysqli->connect_errno) { 
-            echo "ќшибка: " . $mysqli->connect_error . "\n";
+            echo "Oшибка: " . $mysqli->connect_error . "\n";
         }
         
         $mysqli->set_charset("utf8");

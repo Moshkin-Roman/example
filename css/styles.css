@@ -52,7 +52,7 @@
 	color: red;
 }
 
-.auth {
+.auth, .de-auth {
 	position: fixed;
 	top:0;
 	right: 0;
@@ -115,3 +115,32 @@
 .comment.on-check {
 	border: solid 2px red;
 }
+
+.ctrl {
+    font-size: 1.2em;
+    color: gray;
+}
+
+.ctrl i {
+    margin-left: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ctrl i:hover {
+	color: black;
+}
+
+.ctrl .fa-eye {
+    display: none;
+}
+
+.on-check .ctrl .fa-eye {
+    display: block;
+}
+
+.on-check .ctrl .fa-eye-slash {
+    display: none;
+}
+
+
