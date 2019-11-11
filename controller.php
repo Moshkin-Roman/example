@@ -58,7 +58,7 @@
                 }
                 break;                
             
-            default
+            default:
                 echo "fail";
         }
     }
