@@ -99,6 +99,7 @@
     
     /* Вход для админа */
     $('.auth').on('click', function() {
+        let data = '';
         let form = $(
             '<form class="auth-bg">' +
                 '<div class="auth-form">' +
@@ -115,18 +116,15 @@
         });
         
         form.find('.login-snd').on('click', function() {
-            let data = $(this).closest('.auth-bg').serialize();
-
-            $.ajax({
-                url: 'auth.php',
-                type: 'POST',
-                data: data,
-                success: function(answ){
-                    if(answ){
-                        adm_page_view(answ);
-                    }
-                }
-            });
+            data = $(this).closest('.auth-bg').serialize();
+            send_auth(data);
+        });
+        
+        form.on('keyup', function(event) {
+            if (event.keyCode == 13) {
+                data = $(this).closest('.auth-bg').serialize();
+                send_auth(data);
+            } 
         });
         
         $('body').append(form);
@@ -229,6 +227,19 @@
         
         block.removeClass('edit');
     });
+    
+    function send_auth(data) {
+        $.ajax({
+            url: 'auth.php',
+            type: 'POST',
+            data: data,
+            success: function(answ){
+                if(answ){
+                    adm_page_view(answ);
+                }
+            }
+        });
+    }
     
     function clear_form() {
         $('.c-form input, textarea').val('');
