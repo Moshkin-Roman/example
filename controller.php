@@ -44,8 +44,22 @@
                         }
                 }
                 break;                
+                
+            case "save":
+                if(!empty($_POST['id'])) {
+                    $id = $_POST['id'];
+                    $text = htmlspecialchars($_POST['text']);
+                    $sql = "UPDATE comments SET comment='$text', modified='1' WHERE comm_id='$id'";
+                        if ($result = $mysqli->query($sql)) {
+                            echo "ok";
+                        } else {
+                            echo "fail";
+                        }
+                }
+                break;                
             
+            default
+                echo "fail";
         }
     }
-    
 ?>

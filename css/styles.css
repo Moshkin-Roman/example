@@ -46,6 +46,7 @@
 
 .comment .img-list li img {
 	margin: 5px 0;
+    max-width: 100%;
 }
 
 .modified {
@@ -142,5 +143,20 @@
 .on-check .ctrl .fa-eye-slash {
     display: none;
 }
+
+.ctrl .fa-save {
+    display: none;
+}
+
+.edit .ctrl .fa-save {
+    display: block;
+}
+
+.edit .ctrl .fa-pencil-alt,
+.edit .comm-text {
+    display: none;
+}
+
+
 
 

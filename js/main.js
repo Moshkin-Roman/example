@@ -75,14 +75,14 @@
         $.ajax({
             url: 'get_form_data.php',
             type: 'POST',
-//            dataType: 'json',
             contentType: false,
             processData: false,
             data: formData,
-            success: function(json){
-                if(json){
+            success: function(answ){
+                if(answ){
+                    console.log(answ);
                     let text = '';
-                    if(json == 'ok') {
+                    if(answ == 'ok') {
                         text = '<span class="text-success">Комментарий добавлен и будет опубликован после проверки модератором.</span>';
                         clear_form();
                     } else {
@@ -152,8 +152,8 @@
     
     /*  активация комментария админом  */
     $('.fa-eye').on('click', function() {
-        let blok = $(this).closest('.comment');
-        let id = blok.attr('data-id')
+        let block = $(this).closest('.comment');
+        let id = block.attr('data-id')
 
         let data = {
             "action": "activate",
@@ -163,7 +163,7 @@
         $.post('controller.php', data, function(answ) {
             console.log(answ);
             if (answ == 'ok') {
-                blok.removeClass('on-check');
+                block.removeClass('on-check');
             } else {
                 console.log('Ошибка обновления записи');
             }
@@ -172,8 +172,8 @@
     
     /*  выключение комментария админом  */
     $('.fa-eye-slash').on('click', function() {
-        let blok = $(this).closest('.comment');
-        let id = blok.attr('data-id')
+        let block = $(this).closest('.comment');
+        let id = block.attr('data-id')
 
         let data = {
             "action": "lock",
@@ -181,13 +181,53 @@
         };
 
         $.post('controller.php', data, function(answ) {
-            console.log(answ);
             if (answ == 'ok') {
-                blok.addClass('on-check');
+                block.addClass('on-check');
+            } else {
+                console.log('Ошибка отключения записи');
+            }
+        });
+    });
+    
+    /*  включение режима редактирования для комментария  */
+    $('.fa-pencil-alt').on('click', function() {
+        let block = $(this).closest('.comment');
+        let text_block = block.find('.comm-text');
+        let text = text_block.text();
+        let input = $('<input class="comm-edit" />');
+        input.val(text);
+        text_block.after(input);
+        block.addClass('edit');
+        
+    });
+    
+    /*  сохранение отредактированного комментария  */
+    $('.fa-save').on('click', function() {
+        let block = $(this).closest('.comment');
+        let id = block.attr('data-id')
+        let text_block = block.find('.comm-edit');
+        let text = text_block.val();
+        text_block.remove();
+        
+        let data = {
+            "action": "save",
+            "text": text,
+            "id": id
+        };
+
+        $.post('controller.php', data, function(answ) {
+            if (answ == 'ok') {
+                block.find('.comm-text').text(text);
+                let mod_info = block.find('.modified');
+                if (mod_info.length == 0) {
+                    block.find('.comm-text').before('<p class="modified">(изменен администратором)</p>');
+                }
             } else {
                 console.log('Ошибка обновления записи');
             }
         });
+        
+        block.removeClass('edit');
     });
     
     function clear_form() {
@@ -205,5 +245,4 @@
             close_modal();
         }
     }
-    
 });

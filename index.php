@@ -11,6 +11,7 @@
             <i class="fas fa-eye pull-right"></i>
             <i class="fas fa-eye-slash pull-right"></i>
             <i class="fas fa-pencil-alt pull-right"></i>
+            <i class="fas fa-save pull-right"></i>
         </div>'
         );
     } else {
