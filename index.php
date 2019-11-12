@@ -49,7 +49,6 @@
     $str = '';
     
     if ($result = $mysqli->query($sql)) {
-        
         while ($row = $result->fetch_assoc()) {
             $img_list = (get_picters($row['comm_id'], $mysqli)) ? get_picters($row['comm_id'], $mysqli) : "";
             $modified = $row['modified'] == 1 ? "<p class='modified'>(изменен администратором)</p>" : "";
@@ -106,15 +105,21 @@
     <body>
         <div class="container">
             <div class="row">
-                <select id="filter">
-                    <option value="date">по дате</option>
-                    <option value="name">по имени автора</option>
-                    <option value="email">по email</option>
-                </select>
                 <div class="col-sm-6 col-sm-offset-3">
-                    <div class="<?php echo $login_class ?>">
-                        <i class="fas fa-user"></i>
-                        <?php echo $login_caption; ?>
+                    <div class="top-line clearfix row">
+                        <div class="col-xs-6">
+                            <select id="filter" class="form-control">
+                                <option value="date">по дате</option>
+                                <option value="name">по имени автора</option>
+                                <option value="email">по email</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-control pull-right <?php echo $login_class ?>">
+                                <i class="fas fa-user"></i>
+                                <?php echo $login_caption; ?>
+                            </div>
+                        </div>
                     </div>
                     <div class="comm-list">
                         <?php echo $str; ?>

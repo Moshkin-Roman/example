@@ -97,6 +97,43 @@
         });
     });
     
+    /*  Валидация полей формы  */
+    $('.c-form input[name="name"]').on('click keyup change', function() {
+        let txt = $(this).val();
+        let patt = /^[a-zа-я0-9\s]+$/gi;
+        if (!patt.test(txt)) {
+            $(this).addClass('error');
+            $('.inner-msg').html('<span class="err err-name">Недопустимый символ в имени</span>');
+        } else {
+            $(this).removeClass('error');
+            $('.inner-msg .err-name').remove();
+        }
+    });
+    
+    $('.c-form input[name="email"]').on('click keyup change', function() {
+        let txt = $(this).val();
+        let patt = /^.+@.+[.].{2,}$/i;
+        if (!patt.test(txt)) {
+            $(this).addClass('error');
+            $('.inner-msg').html('<span class="err err-email">Некорректный e-mail</span>');
+        } else {
+            $(this).removeClass('error');
+            $('.inner-msg .err-email').remove();
+        }
+    });
+    
+    $('.c-form textarea[name="msg"]').on('click keyup change', function() {
+        let txt = $(this).val();
+        let patt = /^[a-zа-я0-9\s]+$/gi;
+        if (!patt.test(txt)) {
+            $(this).addClass('error');
+            $('.inner-msg').html('<span class="err err-msg">Недопустимый символ в сообщении</span>');
+        } else {
+            $(this).removeClass('error');
+            $('.inner-msg .err-msg').remove();
+        }
+    });
+   
     /* Вход для админа */
     $('.auth').on('click', function() {
         let data = '';

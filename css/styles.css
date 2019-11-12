@@ -1,6 +1,15 @@
+.c-form {
+    margin-bottom: 15px;
+}
+
 .c-form input,
 .c-form textarea {
     margin: 10px 0;
+}
+
+.top-line {
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .comment {
@@ -54,10 +63,8 @@
 }
 
 .auth, .de-auth {
-	position: fixed;
-	top:0;
-	right: 0;
-	padding: 10px 15px;
+    display: inline-block;
+    width: auto;
 	background: #4caf50;
 	cursor: pointer;
 	transition: all 0.2s;
@@ -157,6 +164,17 @@
     display: none;
 }
 
+.err {
+    font-size: 1.2;
+    color: red;
+}
 
+.form-control.error {
+    border: solid 1px red;
+}
+
+.inner-msg {
+    min-height: 2em;
+}
 
 
