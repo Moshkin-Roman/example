@@ -18,7 +18,7 @@
         if (isset($_FILES) && $last_id) {
             if (ad_file($last_id)) echo ("ok");
         }
-        exit;
+        echo ("ok");
     }
     
     function add_comment($name, $email, $msg) {
