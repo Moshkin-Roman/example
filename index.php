@@ -41,9 +41,9 @@
     $mysqli->set_charset("utf8");
 
     if ($adm == 1) {
-        $sql = "SELECT * FROM comments";
+        $sql = "SELECT * FROM comments ORDER BY comm_date DESC";
     } else {
-        $sql = "SELECT * FROM comments WHERE allowed=1";
+        $sql = "SELECT * FROM comments WHERE allowed=1 ORDER BY comm_date DESC";
     }
     
     $str = '';

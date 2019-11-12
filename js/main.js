@@ -14,11 +14,11 @@
                     let aaa = new Date(aa);
                     let bbb = new Date(bb);
 
-                    if (aaa > bbb) {
+                    if (aaa < bbb) {
                         return 1;
                     }
                     
-                    if (aaa < bbb) {
+                    if (aaa > bbb) {
                         return -1;
                     }
                     
