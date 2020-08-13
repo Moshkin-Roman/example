@@ -3,7 +3,7 @@
     $db_user = 'user';
     $db_pass = 'test';
     
-    $mysqli = new mysqli('localhost', $db_user, $db_pass, $db);
+      $mysqli = new mysqli('localhost', $db_user, $db_pass, $db);
     
     if ($mysqli->connect_errno) { 
         echo "Oшибка: " . $mysqli->connect_error . "\n";
@@ -13,13 +13,19 @@
         $name = htmlspecialchars($_POST['name']);
         $email = htmlspecialchars($_POST['email']);
         $msg = htmlspecialchars($_POST['msg']);
-        
+
         $last_id = add_comment($name, $email, $msg);
+		if (empty($last_id))
+			echo "error added comment";
+
         if (isset($_FILES) && $last_id) {
             if (ad_file($last_id)) echo ("ok");
-        }
-        echo ("ok");
-    }
+        } else {
+			echo ("Error added picture");
+		}
+    } else {
+		echo ("fail");
+	}
     
     function add_comment($name, $email, $msg) {
         global $mysqli;
@@ -29,12 +35,12 @@
         }
         
         $mysqli->set_charset("utf8");
-        $sql = "INSERT INTO comments SET comm_name='$name', comm_email='$email', comment='$msg'";
+		$sql = "INSERT INTO comments (comm_name, comm_email, comment) values('{$name}', '{$email}', '{$msg}')";
         
         if ($result = $mysqli->query($sql)) {
             return $mysqli->insert_id;
         } else {
-            return "fail";
+            return false;
         }
     }
     
@@ -50,7 +56,7 @@
             
             make_preview($flname);
             
-            $sql = "INSERT INTO picters SET comm_id='$comm_id', pic_url='$flname'";
+            $sql = "INSERT INTO picters (comm_id, pic_url) values('{$comm_id}', '{$flname}')";
             
             if ($result = $mysqli->query($sql)) {
                 return true;
